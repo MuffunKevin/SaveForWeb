@@ -6,7 +6,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using Microsoft.Win32;
 
 //TODO:
 // Convert all process into a class
@@ -61,7 +60,7 @@ namespace SaveForWeb
         }
 
         #region Events
-        private void button1_Click(object sender, RoutedEventArgs e)
+        private void btnSaveForWeb_Click(object sender, RoutedEventArgs e)
         {
             bool canProcess = true;
             int maxHeight = 0;
@@ -76,7 +75,7 @@ namespace SaveForWeb
 
                 if (!canProcess)
                 {
-                    MessageBox.Show("Max width must be a valid number.");
+                    System.Windows.MessageBox.Show("Max width must be a valid number.");
                     _txtMaxWidth.Focus();
                 }
                 else
@@ -103,19 +102,12 @@ namespace SaveForWeb
                     {
                         if (File.Exists(file))
                         {
-                            Log(string.Format("File found at {0}", file), false);
                             //Processt the file
                             ProcessTheFile(file, maxWidth, maxHeight, quality);
                         }
                         else if (Directory.Exists(file)) //It may be a folder
                         {
-                            Log(string.Format("Folder found at {0}", file), false);
-                            foreach (var innerFile in Directory.GetFiles(file).Where(f => f.EndsWith(".jpg")))
-                            {
-                                //process the file
-                                ProcessTheFile(innerFile, maxWidth, maxHeight, quality);
-                                Log(string.Format("File found at {0}", innerFile), false);
-                            }
+                            ProcessFolder(file, maxWidth, maxHeight, quality);
                         }
                         else
                         {
@@ -133,9 +125,25 @@ namespace SaveForWeb
             }
         }
 
-        private void button2_Click(object sender, RoutedEventArgs e)
+        private void ProcessFolder(string file, int maxWidth, int maxHeight, long quality)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
+            Log(string.Format("Folder found at {0}", file), false);
+
+            foreach (var item in Directory.GetDirectories(file))
+            {
+                ProcessFolder(file, maxWidth, maxHeight, quality);
+            }
+
+            foreach (var innerFile in Directory.GetFiles(file).Select(f => f.ToLowerInvariant()).Where(f => f.EndsWith(".jpg") || f.EndsWith(".jepg")))
+            {
+                //process the file
+                ProcessTheFile(innerFile, maxWidth, maxHeight, quality);
+            }
+        }
+
+        private void btnSelectFile_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.OpenFileDialog dlg = new System.Windows.Forms.OpenFileDialog();
             dlg.FileName = ""; // Default file name
             dlg.DefaultExt = ".jpg"; // Default file extension
             dlg.Multiselect = true;
@@ -145,10 +153,21 @@ namespace SaveForWeb
             var result = dlg.ShowDialog();
 
             // Process open file dialog box results
-            if (result == true)
+            if (result == System.Windows.Forms.DialogResult.OK)
             {
                 // Open document
                 _txtFiles.Text = string.Join(";", dlg.FileNames);
+            }
+        }
+
+        private void btnSelectFolder_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                _txtFiles.Text = dialog.SelectedPath;
+
             }
         }
         #endregion
@@ -164,6 +183,8 @@ namespace SaveForWeb
 
         private void ProcessTheFile(string fileName, int maxWidth, int maxHeight, long quality)
         {
+            Log(string.Format("File found at {0}", fileName), false);
+
             var fullsizeImage = System.Drawing.Image.FromFile(fileName);
 
             double newWidth = maxWidth;
@@ -212,7 +233,7 @@ namespace SaveForWeb
             EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, quality);
             myEncoderParameters.Param[0] = myEncoderParameter;
 
-            foreach(var invalidCararter in _invalidCaraters)
+            foreach (var invalidCararter in _invalidCaraters)
             {
                 fileName = fileName.Replace(invalidCararter.Key, invalidCararter.Value);
             }
@@ -243,5 +264,6 @@ namespace SaveForWeb
         }
 
         #endregion
+
     }
 }

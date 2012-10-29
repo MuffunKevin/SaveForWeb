@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Save for web" Height="350" Width="525" AllowsTransparency="False">
     <Grid>
-        <Button Content="Save for web" Height="23" HorizontalAlignment="Left" Margin="219,276,0,0" Name="_btnSaveForWeb" VerticalAlignment="Top" Width="75" Click="button1_Click" />
-        <Button Content="Select files" Height="23" HorizontalAlignment="Left" Margin="400,12,0,0" Name="_btnSelectFile" VerticalAlignment="Top" Width="75" Click="button2_Click" />
-        <TextBlock Height="23" HorizontalAlignment="Left" Margin="21,12,0,0" Name="_txtFiles" Text="" VerticalAlignment="Top" Width="373" Background="#00FAFAFA" />
+        <Button Content="Save for web" Height="23" HorizontalAlignment="Left" Margin="219,276,0,0" Name="_btnSaveForWeb" VerticalAlignment="Top" Width="75" Click="btnSaveForWeb_Click" />
+        <Button Content="Select files" Height="23" HorizontalAlignment="Left" Margin="314,12,0,0" Name="_btnSelectFile" VerticalAlignment="Top" Width="75" Click="btnSelectFile_Click" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="21,12,0,0" Name="_txtFiles" Text="" VerticalAlignment="Top" Width="287" Background="#00FAFAFA" />
         <Label Content="Logs" Height="28" HorizontalAlignment="Left" Margin="21,111,0,0" Name="label1" VerticalAlignment="Top" />
         <TextBox Height="125" HorizontalAlignment="Left" Margin="21,145,0,0" Name="_txtLogs" VerticalAlignment="Top" Width="454" />
         <TextBox Height="23" HorizontalAlignment="Left" Margin="21,80,0,0" Name="_txtMaxWidth" VerticalAlignment="Top" Width="120" Text="1000" />
@@ -14,5 +14,6 @@
         <Label Content="Max width" Height="28" HorizontalAlignment="Left" Margin="21,46,0,0" Name="label2" VerticalAlignment="Top" Width="120" ClipToBounds="False" HorizontalContentAlignment="Center" />
         <Label Content="Max height" Height="28" HorizontalAlignment="Left" Margin="188,46,0,0" Name="label3" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center" />
         <Label Content="Quality" Height="28" HorizontalAlignment="Left" Margin="355,46,0,0" Name="label4" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center" />
+        <Button Content="Select folder" Height="23" HorizontalAlignment="Left" Margin="400,12,0,0" Name="btnSelectFolder" VerticalAlignment="Top" Width="75" Click="btnSelectFolder_Click" />
     </Grid>
 </Window>
