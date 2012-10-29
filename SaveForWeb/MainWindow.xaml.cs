@@ -125,22 +125,6 @@ namespace SaveForWeb
             }
         }
 
-        private void ProcessFolder(string file, int maxWidth, int maxHeight, long quality)
-        {
-            Log(string.Format("Folder found at {0}", file), false);
-
-            foreach (var item in Directory.GetDirectories(file))
-            {
-                ProcessFolder(file, maxWidth, maxHeight, quality);
-            }
-
-            foreach (var innerFile in Directory.GetFiles(file).Select(f => f.ToLowerInvariant()).Where(f => f.EndsWith(".jpg") || f.EndsWith(".jepg")))
-            {
-                //process the file
-                ProcessTheFile(innerFile, maxWidth, maxHeight, quality);
-            }
-        }
-
         private void btnSelectFile_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.OpenFileDialog dlg = new System.Windows.Forms.OpenFileDialog();
@@ -173,6 +157,22 @@ namespace SaveForWeb
         #endregion
 
         #region Private functions
+
+        private void ProcessFolder(string file, int maxWidth, int maxHeight, long quality)
+        {
+            Log(string.Format("Folder found at {0}", file), false);
+            
+            foreach (var item in Directory.GetDirectories(file))
+            {
+                ProcessFolder(file, maxWidth, maxHeight, quality);
+            }
+
+            foreach (var innerFile in Directory.GetFiles(file).Select(f => f.ToLowerInvariant()).Where(f => f.EndsWith(".jpg") || f.EndsWith(".jepg")))
+            {
+                //process the file
+                ProcessTheFile(innerFile, maxWidth, maxHeight, quality);
+            }
+        }
 
         private void Log(string message, bool error)
         {
@@ -264,6 +264,5 @@ namespace SaveForWeb
         }
 
         #endregion
-
     }
 }
